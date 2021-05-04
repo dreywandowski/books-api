@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "c8bc1865-331b-45eb-a09b-ab52017a78be",
+		"name": "Books API",
+		"description": "An API for getting and updating books",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"cAnimal Farm\",\r\n\"isbn\" : \"3839392-393849\",\r\n\"authors\" :\"George Orwell\",\r\n\"number_of_pages\": 67,\r\n\"publisher\": \"Harlequinn Books\",\r\n\"release_date\" :\"2008-11-02\",\r\n\"country\": \"USA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/books-api/api/v1/Books.php",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"books-api",
+						"api",
+						"v1",
+						"Books.php"
+					]
+				},
+				"description": "create a book to the collection"
+			},
+			"response": []
+		},
+		{
+			"name": "Read",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n    \"b_name\": \"Animal Farm\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/books-api/api/v1/Books.php?action=read",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"books-api",
+						"api",
+						"v1",
+						"Books.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "read"
+						},
+						{
+							"key": "name",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"You are lonely when you dead\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost/books-api/api/v1/Books.php?action=update&id=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"books-api",
+						"api",
+						"v1",
+						"Books.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "update"
+						},
+						{
+							"key": "id",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/books-api/api/v1/Books.php?action=delete&id=5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"books-api",
+						"api",
+						"v1",
+						"Books.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "delete"
+						},
+						{
+							"key": "id",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "External Books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.anapioficeandfire.com/api/books?name=A Game of Thrones",
+					"protocol": "https",
+					"host": [
+						"www",
+						"anapioficeandfire",
+						"com"
+					],
+					"path": [
+						"api",
+						"books"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "A Game of Thrones"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

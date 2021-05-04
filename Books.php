@@ -58,30 +58,62 @@ class Books
      switch ($this->action){
 
                case 'get_external_book':
-               //echo $this->name;
 
 
-$curl = curl_init();
+$ch = curl_init();
 
-curl_setopt_array($curl, array(
-  CURLOPT_URL => 'https://www.anapioficeandfire.com/api/books?name=A%20Game%20of%20Thrones',
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => '',
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 0,
-  CURLOPT_FOLLOWLOCATION => true,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => 'GET',
-  CURLOPT_HTTPHEADER => array(
-    'Cookie: __cfduid=d5b3aa1e39f452696e8375845dcb205c11620148052; ARRAffinity=8c1c76a162cd70c14989494045692376887ae812afff5c54cba19b00b92562ed; ARRAffinitySameSite=8c1c76a162cd70c14989494045692376887ae812afff5c54cba19b00b92562ed'
-  ),
-));
+                   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-$response = curl_exec($curl);
+                   curl_setopt($ch, CURLOPT_URL,'https://www.anapioficeandfire.com/api/books?name='.urlencode($this->name));
 
-curl_close($curl);
-echo $response;
+                   $result=curl_exec($ch);
 
+                   curl_close($ch);
+
+
+$result = file_get_contents('https://www.anapioficeandfire.com/api/books?name='.urlencode($this->name));
+
+$fin = json_decode($result, true);
+if ($fin != null){
+    //show item in json format
+    $this->book_item = array(
+        "status_code" => 200,
+        'status' => 'success',
+        'data' => array(
+            'book' => array(
+                "name" => $fin[0]['name'],
+                "isbn" => $fin[0]['isbn'],
+                "authors" => array(
+                    $fin[0]['authors']
+                ),
+                "number_of_pages" => $fin[0]['numberOfPages'],
+                "publisher" => $fin[0]['publisher'],
+                "country" => $fin[0]['country'],
+                "release_date" => $fin[0]['released']
+            )
+        )
+    );
+
+    array_push($this->book_item);
+
+
+    echo json_encode(array($this->book_item));
+
+}
+
+
+else{
+    $this->book_item = array(
+        "status_code" => 200,
+        'status' => 'success',
+        'data' => array()
+    );
+
+    array_push($this->book_item);
+
+
+    echo json_encode(array($this->book_item));
+}
 break;
 
 
@@ -280,7 +312,7 @@ break;
                     $this->query = "SELECT * from books WHERE 1=1" ;
                   } 
 
-        
+        echo $this->query;
 
                     //die(); 
 
@@ -317,7 +349,7 @@ break;
                      // set the response code to 404
                      http_response_code(404);
 
-                     echo json_encode(array("message" => "Error updating the book. This value already exists"));
+                     echo json_encode(array("message" => "Error updating the book. This value already exists or the book is removed"));
                  }
              }
              break;
@@ -328,7 +360,7 @@ break;
 
 case 'delete':
 
-if (!$this->data) {
+if ($this->id === '') {
                  // set the response code to 404
                  http_response_code(404);
 
@@ -340,10 +372,11 @@ if (!$this->data) {
                  $this->query = "DELETE from books where id = $this->id";
 
 
-                 mysqli_query($this->conn, $this->query);
-                 if (mysqli_affected_rows($this->conn) > 0) {
-                     // set response code to 204 -OK
-                     http_response_code(204);
+                mysqli_query($this->conn, $this->query);
+                 if (mysqli_query($this->conn, $this->query)) {
+                     // set response code to 200 -OK
+                  //http_response_code(204);
+
 
                      //show item in json format
                      $this->book_item = array(
@@ -351,18 +384,7 @@ if (!$this->data) {
                          'status' => 'success',
                          'message'=> "The book My First Book was deleted successfully",
                          'data' => array(
-                             'book' => array(
-                                 "id"   => $this->id,
-                                 "name" => $this->b_name,
-                                 "isbn" => $this->isbn,
-                                 "authors" => array(
-                                     $this->authors
-                                 ),
-                                 "number_of_pages" => $this->number_of_pages,
-                                 "publisher" => $this->publisher,
-                                 "country" => $this->country,
-                                 "release_date" => $this->release_date
-                             )
+
                          )
                      );
 
@@ -385,7 +407,7 @@ break;
 
 case 'show':
 
-if (!$this->data) {
+if ($this->id =='') {
                  // set the response code to 404
                  http_response_code(404);
 
