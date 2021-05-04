@@ -139,6 +139,7 @@ break;
 
                            //show item in json format
                            $this->book_item = array(
+                               'status_code' => 201,
                                'status' => 'success',
                                'data' => array(
                                    'book' => array(
@@ -219,6 +220,7 @@ break;
                        while($row = mysqli_fetch_array($this->result)){
                        //show item in json format
                            $this->book_item = array(
+                               'status_code' => 200,
                                'status' =>'success',
                                'data' =>array(
                                    'book' => array(
@@ -312,7 +314,7 @@ break;
                     $this->query = "SELECT * from books WHERE 1=1" ;
                   } 
 
-        echo $this->query;
+       // echo $this->query;
 
                     //die(); 
 
@@ -323,6 +325,7 @@ break;
 
                      //show item in json format
                      $this->book_item = array(
+                         'status_code' => 200,
                          'status' => 'success',
                          'message'=> "The book My First Book was updated successfully",
                          'data' => array(
